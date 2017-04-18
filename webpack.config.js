@@ -2,6 +2,7 @@
  * Created by Prateek on 4/17/2017.
  */
 var path = require("path");
+var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -71,6 +72,10 @@ module.exports = {
         ]
     },
     plugins:[
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        }),
         extractPlugin,
         new HtmlWebpackPlugin({
             filename: 'index.html',
