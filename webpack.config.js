@@ -10,7 +10,9 @@ var extractPlugin = new ExtractTextPlugin({
     filename: 'main.css'
 });
 module.exports = {
-    entry: './src/js/app.js',
+    entry: {
+        app: './src/js/app.js'
+    },
     output:{
         path: path.resolve(__dirname,'dist'),
         filename: 'bundle.js'
@@ -51,14 +53,39 @@ module.exports = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            /*outputPath: '/',*/
+                            /*publicPath: 'img/'*/
+                        }
+                    }
+                ],
+                exclude: path.resolve(__dirname, 'src/index.html')
             }
         ]
     },
     plugins:[
         extractPlugin,
         new HtmlWebpackPlugin({
+            filename: 'index.html',
             template: 'src/index.html'
         }),
+        /* Not a good approach as it will not allow to add html files
+            dynamically and we need to remember names of all html files
+            to add them
+            1) Need to define entry in a different manner
+            2) chunks: [] Tells webpack, which bundles should be injected in these pages*/
+        /*new HtmlWebpackPlugin({
+            filename: 'users.html',
+            template: 'src/users.html',
+            chunks: []
+        }),*/
         new CleanWebpackPlugin(['dist'])
     ]
 }
